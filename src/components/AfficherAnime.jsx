@@ -48,6 +48,7 @@ export default function AfficherAnime({ fetchingAnime }) {
   };
 
   return (
+    <div className="container w-full flex justify-center">
     <div className="w-full py-10">
       <div className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center">
         {currentAnimes.map((anime) => (
@@ -97,6 +98,7 @@ export default function AfficherAnime({ fetchingAnime }) {
           Suivant
         </button>
       </div>
+    </div>
     </div>
   );
 }

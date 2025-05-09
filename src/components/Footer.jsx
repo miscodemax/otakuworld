@@ -12,7 +12,7 @@ export default function Footer() {
     return (
         // components/Footer.jsx
 
-      <footer className="bg-gray-900 text-white py-8 mt-12">
+      <footer className="bg-gray-900 text-white py-8">
         <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 justify-items-center gap-8 text-sm">
           
           {/* Logo et description */}
@@ -43,6 +43,7 @@ export default function Footer() {
               <li><a href="#" className="hover:text-yellow-400">Instagram</a></li>
               <li><a href="#" className="hover:text-yellow-400">X (Twitter)</a></li>
               <li><a href="#" className="hover:text-yellow-400">Discord</a></li>
+              <li><a href="https://www.youtube.com/@momovista0" target="_blank" className="hover:text-yellow-400">Youtube</a></li>
             </ul>
           </div>
   

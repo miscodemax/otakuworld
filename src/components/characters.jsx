@@ -16,25 +16,49 @@ export default function TopCharacters() {
     const [characters, setCharacters] = useState([]);
     const [loader, setLoader] = useState(true);
 
-    useEffect(() => {
-        const fetchCaharacter = async () => {
-            const data = await getPopularCharacters(25);
-            setCharacters(data);
-            setLoader(false);
-        };
 
-        fetchCaharacter();
-    }, []);
+    // Fonction pour récupérer les personnages populaires
+    useEffect(() => {
+    const fetchCharacters = async () => {
+        try {
+            const data = await getPopularCharacters(25);
+
+            // Vérifie si data est un tableau valide
+            if (Array.isArray(data)) {
+              const unique = data.filter(
+            (anime, index, self) =>
+              anime.mal_id && index === self.findIndex(a => a.mal_id === anime.mal_id)
+          );
+          setCharacters(unique);
+        } else {
+          console.warn("Les données ne sont pas un tableau :", data);
+          setCharacters([]);
+        }
+      } catch (err) {
+        console.error("Erreur lors du fetch :", err);
+        setCharacters([]);
+      } finally {
+        setLoader(false);
+      }
+    
+    };
+
+
+        fetchCharacters();
+    }, []); // Se lance au premier rendu du composant
 
     if (loader) {
-        return <div className="text-center text-amber-500 text-3xl margin-56">Chargement...</div>;
+        return <div className="text-center text-amber-500 text-3xl">Chargement...</div>;
     }
+
 
     return (
         <div className="w-full px-6 py-10 bg-gray-950">
-            <h2 className="text-5xl text-center font-bold text-white mb-6 transition-all duration-200 hover:text-amber-400">Les rois et reines de la badassitude</h2>
+            <h2 className="text-5xl text-center font-bold text-white mb-6 transition-all duration-200 hover:text-amber-400">
+                Les rois et reines de la badassitude
+            </h2>
             <Swiper
-                modules={[Navigation, Autoplay, EffectCoverflow, Pagination]} // Ajouter Pagination ici
+                modules={[Navigation, Autoplay, EffectCoverflow, Pagination]}
                 effect="coverflow"
                 loop={true}
                 grabCursor={true}
@@ -51,38 +75,35 @@ export default function TopCharacters() {
                 autoplay={{ delay: 1500, disableOnInteraction: false, pauseOnMouseEnter: true }}
                 navigation
                 pagination={{
-                    clickable: true,  // Permet de cliquer sur les points pour naviguer
+                    clickable: true,
                 }}
                 className="w-full max-w-6xl"
             >
-                {Array.isArray(characters) && 
-                    characters.map((character) => (
+                {characters.map((character) => (
                     <SwiperSlide
-                key={character.mal_id}
-    className="bg-gray-900 rounded-2xl shadow-lg max-w-[250px] flex flex-col overflow-hidden transition-transform duration-300 hover:scale-105"
-    >
-    <img
-            src={character.images.jpg.image_url}
-        alt={character.name}
-        className="w-full h-64 object-cover"
-    />
-    <div className="p-4 flex flex-col flex-grow justify-between">
-        <div>
-        <h3 className="text-lg font-bold text-amber-400 mb-1 text-center">{character.name}</h3>
-        <p className="text-sm text-gray-300 italic text-center">
-            {character.nicknames?.[0] || "Aucun surnom"}
-        </p>
+                        key={character.mal_id + character.name} // Utilisation de `mal_id` et `name` pour garantir une clé unique
+                        className="bg-gray-900 rounded-2xl shadow-lg max-w-[250px] flex flex-col overflow-hidden transition-transform duration-300 hover:scale-105"
+                    >
+                        <img
+                            src={character.images.jpg.image_url}
+                            alt={character.name}
+                            className="w-full h-64 object-cover"
+                        />
+                        <div className="p-4 flex flex-col flex-grow justify-between">
+                            <div>
+                                <h3 className="text-lg font-bold text-amber-400 mb-1 text-center">{character.name}</h3>
+                                <p className="text-sm text-gray-300 italic text-center">
+                                    {character.nicknames?.[0] || "Aucun surnom"}
+                                </p>
+                            </div>
+                            <div className="mt-4 text-xs text-gray-400 text-center">
+                                <p><span className="text-white font-medium">Anime :</span> {character[0]?.anime[0].title || "Inconnu"}</p>
+                                <p><span className="text-white font-medium">Favoris :</span> {character.favorites?.toLocaleString() || 0}</p>
+                            </div>
+                        </div>
+                    </SwiperSlide>
+                ))}
+            </Swiper>
         </div>
-        <div className="mt-4 text-xs text-gray-400 text-center">
-        <p><span className="text-white font-medium">Anime :</span> {character.anime?.[0]?.name || "Inconnu"}</p>
-        <p><span className="text-white font-medium">Favoris :</span> {character.favorites?.toLocaleString() || 0}</p>
-        </div>
-    </div>
-                                    </SwiperSlide>
-
-                        ))
-                    }
-                </Swiper>
-            </div>
-        );
-    }
+    );
+}
