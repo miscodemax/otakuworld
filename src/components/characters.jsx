@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getPopularCharacters } from "../API/jikan";
+import Loader from "./loader";
 
 // Import Swiper React + modules
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -11,6 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination"; // Assure-toi que le CSS de Swiper est bien importé
 import "../swiper-styles.css"; // Ton fichier CSS personnalisé
+import { div } from "framer-motion/client";
 
 export default function TopCharacters() {
     const [characters, setCharacters] = useState([]);
@@ -48,7 +50,11 @@ export default function TopCharacters() {
     }, []); // Se lance au premier rendu du composant
 
     if (loader) {
-        return <div className="text-center text-amber-500 text-3xl">Chargement...</div>;
+        return (
+
+            <Loader/>
+        
+    )
     }
 
 
@@ -98,7 +104,7 @@ export default function TopCharacters() {
                             </div>
                             <div className="mt-4 text-xs text-gray-400 text-center">
                                 <p><span className="text-white font-medium">Anime :</span> {character[0]?.anime[0].title || "Inconnu"}</p>
-                                <p><span className="text-white font-medium">Favoris :</span> {character.favorites?.toLocaleString() || 0}</p>
+                                <p><span className="text-white font-medium">Favoris :</span> {character.favorite?.toLocaleString() || 0}</p>
                             </div>
                         </div>
                     </SwiperSlide>

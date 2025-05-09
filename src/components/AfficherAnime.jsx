@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Loader from "./loader";
 
 export default function AfficherAnime({ fetchingAnime }) {
   const [animes, setAnimes] = useState([]);
@@ -19,14 +20,13 @@ export default function AfficherAnime({ fetchingAnime }) {
   }, [fetchingAnime]);
   
 
-  if (loader) {
-    return (
-      <div className="text-center text-amber-500 text-3xl mt-20">
-        Chargement...
-      </div>
-    );
-
-  }
+    if (loader) {
+        return (
+  
+            <Loader/>
+  
+    )
+    }
 
   if (!Array.isArray(animes)) {
   return <div className="text-red-500 text-center mt-10">Erreur : données invalides</div>;

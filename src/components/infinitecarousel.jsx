@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getUpcomingAnimes } from "../API/jikan";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, EffectCoverflow, Pagination } from "swiper/modules";
+import Loader from "./loader";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
@@ -39,9 +40,14 @@ export default function InfiniteCarousel() {
     fetchAnime();
   }, []);
 
-  if (loader) {
-    return <div className="text-center text-amber-500 text-3xl margin-56">Chargement...</div>;
-  }
+  
+    if (loader) {
+        return (
+        
+            <Loader/>
+       
+    )
+    }
 
   return (
     <div className="w-full px-6 py-10 bg-gray-950">

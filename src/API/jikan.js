@@ -1,17 +1,9 @@
-// src/api/apiJikan.js
-
 const BASE_URL = 'https://api.jikan.moe/v4';
 
-/**
- * Attend pendant un certain nombre de millisecondes.
- */
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-/**
- * Fait un appel fetch avec tentative de repli en cas d'erreur 429 (Too Many Requests).
- */
 async function fetchWithRetry(url, retries = 3, delayMs = 1000) {
   for (let attempt = 0; attempt <= retries; attempt++) {
     try {
@@ -39,9 +31,6 @@ async function fetchWithRetry(url, retries = 3, delayMs = 1000) {
   }
 }
 
-/**
- * Récupère les animes populaires.
- */
 export async function getPopularAnimes(limit = 10) {
   try {
     const data = await fetchWithRetry(`${BASE_URL}/top/anime?limit=${limit}`);
@@ -52,9 +41,6 @@ export async function getPopularAnimes(limit = 10) {
   }
 }
 
-/**
- * Récupère les animes à venir (upcoming).
- */
 export async function getUpcomingAnimes(limit = 10) {
   try {
     const data = await fetchWithRetry(`${BASE_URL}/seasons/upcoming?limit=${limit}`);
@@ -65,9 +51,6 @@ export async function getUpcomingAnimes(limit = 10) {
   }
 }
 
-/**
- * Récupère les animes actuellement diffusés cette saison.
- */
 export async function getCurrentSeasonAnimes(limit = 10) {
   try {
     const data = await fetchWithRetry(`${BASE_URL}/seasons/now?limit=${limit}`);
@@ -78,15 +61,81 @@ export async function getCurrentSeasonAnimes(limit = 10) {
   }
 }
 
-/**
- * Récupère les personnages les plus populaires.
- */
 export async function getPopularCharacters(limit = 10) {
   try {
     const data = await fetchWithRetry(`${BASE_URL}/top/characters?limit=${limit}`);
     return data.data || [];
   } catch (error) {
     console.error('Erreur lors du chargement des personnages populaires :', error);
+    return [];
+  }
+}
+
+export async function getSeiyus(limit = 10, allSeiyuspercharacter=2) {
+  try {
+    const characters = await getPopularCharacters(limit);
+    const allSeiyus = [];
+
+    for (const character of characters) {
+      const response = await fetchWithRetry(`${BASE_URL}/characters/${character.mal_id}/full`);
+      const data = response.data;
+
+      if (data && data.voices && Array.isArray(data.voices)) {
+        data.voices.slice(0, allSeiyuspercharacter).forEach(voice => {
+          if (voice.person) {
+            allSeiyus.push({
+              personnage: character.name,
+              language : voice.language,
+              mal_id: voice.person.mal_id,
+              name: voice.person.name,
+              images: voice.person.images,
+              langue: voice.language,
+              favorite: character.favorites,
+            });
+          }
+        });
+      }
+    }
+
+    return allSeiyus;
+  } catch (err) {
+    console.error("Erreur lors du chargement des seiyuus :", err);
+    return []; // <- toujours retourner un tableau
+  }
+}
+
+
+export async function getStudioAnimes(studioId, limit = 5) {
+  try {
+    const data = await fetchWithRetry(`${BASE_URL}/anime?producers=${studioId}&limit=${limit}`);
+    return data.data || [];
+  } catch (error) {
+    console.error(`Erreur lors du chargement des animes du studio ${studioId} :`, error);
+    return [];
+  }
+}
+
+export async function getNewsFromStudioAnimes(studioId, animeLimit = 5, newsLimitPerAnime = 2) {
+  try {
+    const animes = await getStudioAnimes(studioId, animeLimit);
+    const allNews = [];
+
+    for (const anime of animes) {
+      const newsData = await fetchWithRetry(`${BASE_URL}/anime/${anime.mal_id}/news`);
+      const newsItems = (newsData.data || []).slice(0, newsLimitPerAnime).map(news => ({
+        title: news.title,
+        url: news.url,
+        image: news.images?.jpg?.image_url || anime.images?.jpg?.image_url,
+        excerpt: news.excerpt,
+        date: news.date,
+        animeTitle: anime.title
+      }));
+      allNews.push(...newsItems);
+    }
+
+    return allNews;
+  } catch (error) {
+    console.error(`Erreur lors du chargement des news pour le studio ${studioId} :`, error);
     return [];
   }
 }

@@ -1,13 +1,20 @@
 import { motion } from 'framer-motion';
 
-const AnimatedSection = ({ children, delay = 0 }) => {
+const variants = {
+  slideUp: { initial: { opacity: 0, y: 50 }, whileInView: { opacity: 1, y: 0 } },
+  slideDiagonal: { initial: { opacity: 0, x: -50, y: 50 }, whileInView: { opacity: 1, x: 0, y: 0 } },
+  zoom: { initial: { opacity: 0, scale: 0.95 }, whileInView: { opacity: 1, scale: 1 } },
+};
+
+const AnimatedSection = ({ children, delay = 0.2, type = "slideUp" }) => {
+  const animation = variants[type] || variants.slideUp;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }} // L'élément commence légèrement plus bas
-      animate={{ opacity: 1, y: 0 }} // Se déplace à sa position initiale
-      transition={{ duration: 1, delay, ease: 'easeOut' }} // Plus long et plus fluide
-      whileInView={{ opacity: 1, y: 0 }} // L'élément devient visible et se déplace en fonction du scroll
-      viewport={{ once: true }} // Déclenche l'animation une seule fois
+      initial={animation.initial}
+      whileInView={animation.whileInView} // corrigé ici
+      transition={{ duration: 0.8, delay, ease: 'easeOut' }}
+      viewport={{ once: true, amount: 0.2 }}
       className="w-full flex justify-center"
     >
       {children}
@@ -16,4 +23,3 @@ const AnimatedSection = ({ children, delay = 0 }) => {
 };
 
 export default AnimatedSection;
-
