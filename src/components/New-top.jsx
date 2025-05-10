@@ -28,9 +28,9 @@ export default function NewTop() {
                 </button>
             </div>
             {mode ? (
-                <AfficherAnime fetchingAnime = {() => getCurrentSeasonAnimes(25)}/>
+                <AfficherAnime fetchingAnime = {getCurrentSeasonAnimes}/>
             ) : (
-                <AfficherAnime fetchingAnime = {() => getPopularAnimes(25)}/>
+                <AfficherAnime fetchingAnime = {getPopularAnimes}/>
             )
             }
         </div>

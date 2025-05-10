@@ -31,10 +31,11 @@ async function fetchWithRetry(url, retries = 3, delayMs = 1000) {
   }
 }
 
-export async function getPopularAnimes(limit = 10) {
+export async function getPopularAnimes(limit = 10, page = 2) {
   try {
-    const data = await fetchWithRetry(`${BASE_URL}/top/anime?limit=${limit}`);
-    return data.data || [];
+    const data = await fetchWithRetry(`${BASE_URL}/top/anime?limit=${limit}&page=${page}`);
+    console.log("Données retournées par l'API :", data);
+    return [data.data, data.pagination];
   } catch (error) {
     console.error('Erreur lors du chargement des animes populaires :', error);
     return [];
@@ -51,10 +52,10 @@ export async function getUpcomingAnimes(limit = 10) {
   }
 }
 
-export async function getCurrentSeasonAnimes(limit = 10) {
+export async function getCurrentSeasonAnimes(limit = 10, page = 2) {
   try {
-    const data = await fetchWithRetry(`${BASE_URL}/seasons/now?limit=${limit}`);
-    return data.data || [];
+    const data = await fetchWithRetry(`${BASE_URL}/seasons/now?limit=${limit}&page=${page}`);
+    return [data.data, data.pagination];
   } catch (error) {
     console.error('Erreur lors du chargement des animes actuels :', error);
     return [];
@@ -71,7 +72,7 @@ export async function getPopularCharacters(limit = 10) {
   }
 }
 
-export async function getSeiyus(limit = 10, allSeiyuspercharacter=2) {
+export async function getSeiyus(limit = 10, allSeiyuspercharacter = 2) {
   try {
     const characters = await getPopularCharacters(limit);
     const allSeiyus = [];
@@ -85,7 +86,7 @@ export async function getSeiyus(limit = 10, allSeiyuspercharacter=2) {
           if (voice.person) {
             allSeiyus.push({
               personnage: character.name,
-              language : voice.language,
+              language: voice.language,
               mal_id: voice.person.mal_id,
               name: voice.person.name,
               images: voice.person.images,
@@ -100,10 +101,9 @@ export async function getSeiyus(limit = 10, allSeiyuspercharacter=2) {
     return allSeiyus;
   } catch (err) {
     console.error("Erreur lors du chargement des seiyuus :", err);
-    return []; // <- toujours retourner un tableau
+    return [];
   }
 }
-
 
 export async function getStudioAnimes(studioId, limit = 5) {
   try {
@@ -136,6 +136,42 @@ export async function getNewsFromStudioAnimes(studioId, animeLimit = 5, newsLimi
     return allNews;
   } catch (error) {
     console.error(`Erreur lors du chargement des news pour le studio ${studioId} :`, error);
+    return [];
+  }
+}
+
+export async function getShonen(limit = 10, page = 2) {
+  try {
+    const data = await fetchWithRetry(
+      `${BASE_URL}/anime?order_by=start_date&sort=desc&genres=27&genre_type=demographics&limit=${limit}&page=${page}`
+    );
+    return [data.data, data.pagination];
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+export async function getShojo(limit = 10, page = 2) {
+  try {
+    const data = await fetchWithRetry(
+      `${BASE_URL}/anime?order_by=start_date&sort=desc&genres=25&genre_type=demographics&limit=${limit}&page=${page}`
+    );
+    return [data.data, data.pagination];
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+
+export async function getSeinen(limit = 10, page = 2) {
+  try {
+    const data = await fetchWithRetry(
+      `${BASE_URL}/anime?order_by=start_date&sort=desc&genres=42&genre_type=demographics&limit=${limit}&page=${page}`
+    );
+    return [data.data, data.pagination];
+  } catch (error) {
+    console.log(error);
     return [];
   }
 }
