@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Loader from "./loader";
+import { getGenre } from "../API/jikan";
 
-export default function AfficherAnime({ fetchingAnime }) {
+export default function Genres({ genreId, Mode }) {
   const [animes, setAnimes] = useState([]);
   const [loader, setLoader] = useState(true);
   const [numberPage, setNumberPage] = useState(1);
@@ -10,7 +11,7 @@ export default function AfficherAnime({ fetchingAnime }) {
 
   const fetchAnime = async () => {
     setLoader(true);
-    const data = await fetchingAnime(25, currentPage);
+    const data = await getGenre(25, currentPage, genreId, Mode);
     setHasNextPage(data[1].has_next_page);
     setNumberPage(data[1].last_visible_page);
     setAnimes(data[0]);
@@ -18,8 +19,12 @@ export default function AfficherAnime({ fetchingAnime }) {
   };
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [genreId]);
+
+  useEffect(() => {
     fetchAnime();
-  }, [currentPage, fetchingAnime]);
+  }, [currentPage, genreId]);
 
   const nextPage = () => {
     if (hasNextPage) setCurrentPage((prev) => prev + 1);
@@ -35,7 +40,7 @@ export default function AfficherAnime({ fetchingAnime }) {
   return (
     <div className="container w-full flex justify-center">
       <div className="w-full">
-        {/* Pagination */}
+        {/* Pagination Top */}
         <div className="flex justify-center mb-8 gap-4">
           <button
             onClick={prevPage}
@@ -93,7 +98,7 @@ export default function AfficherAnime({ fetchingAnime }) {
           ))}
         </div>
 
-        {/* Pagination */}
+        {/* Pagination Bottom */}
         <div className="flex justify-center mt-8 gap-4">
           <button
             onClick={prevPage}

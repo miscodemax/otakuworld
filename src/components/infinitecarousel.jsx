@@ -75,7 +75,10 @@ export default function InfiniteCarousel() {
         {animes.map(anime => (
           <SwiperSlide key={anime.mal_id} className="bg-gray-800 rounded-lg pb-4 shadow-md max-w-[300px]">
             <img src={anime.images.jpg.image_url} alt={anime.title} className="w-full h-60 object-cover rounded-md mb-2" />
-            <h3 className="text-white text-sm font-semibold px-4">{anime.title}</h3>
+            <h3 className="text-white text-sm font-semibold px-4 text-center">{anime.title}</h3>
+            <p className="text-3xl hover:text-amber-500 transition-all duration-200 text-center font-bold text-gray-950">{anime.studios[0]?.name || 'inconnu'}</p>
+            <p className="text-3xl hover:text-amber-500 transition-all duration-200 text-center font-bold ">{anime.aired.string || 'inconnu'}</p>
+            <p className="text-sm hover:text-amber-500 transition-all duration-200 text-center font-bold text-red-800">{anime.rating}</p>
           </SwiperSlide>
         ))}
       </Swiper>

@@ -62,6 +62,16 @@ export async function getCurrentSeasonAnimes(limit = 10, page = 2) {
   }
 }
 
+export async function getGenre(limit = 10, page = 1, genre = 1, choice) {
+  try {
+    const data = await fetchWithRetry(`${BASE_URL}/anime?limit=${limit}&page=${page}&${choice}=${genre}&&order_by=popularity&sort=asc`);
+    return [data.data, data.pagination];
+  } catch (error) {
+    console.error('Erreur lors du chargement des animes par genre :', error);
+    return [];
+  }
+}
+
 export async function getPopularCharacters(limit = 10) {
   try {
     const data = await fetchWithRetry(`${BASE_URL}/top/characters?limit=${limit}`);
