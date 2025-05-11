@@ -13,7 +13,7 @@ import Seinen from './components/seinen.jsx';
 
 function App() {
   return (
-    <motion.main className="pt-20 min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
+    <motion.main className="pt-30 min-h-screen flex flex-col overflow-x-hidden bg-gradient-to-br from-gray-900 via-purple-900 to-black text-white">
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
@@ -26,7 +26,6 @@ function App() {
           <Route path='shonen' element={<Shonen />} />
           <Route path='seinen' element={<Seinen />} />
           <Route path='shojo' element={<Shojo />} />
-
         </Route>
       </Routes>
       <Footer />

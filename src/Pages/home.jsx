@@ -15,9 +15,9 @@ export default function Home() {
         <AnimatedSection delay={0.2} type="slideUp">
           <InfiniteCarousel />
         </AnimatedSection>
-        <AnimatedSection delay={0.4} type="zoom">
+
           <NewTop />
-        </AnimatedSection>
+
         <AnimatedSection delay={0.6} type="slideDiagonal">
           <TopCharacters />
         </AnimatedSection>

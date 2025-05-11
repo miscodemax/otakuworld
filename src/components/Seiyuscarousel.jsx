@@ -64,7 +64,7 @@ if (loader) {
 return (
     <div className="w-full px-6 py-10 bg-gray-950">
         <h2 className="text-5xl text-center font-bold text-white mb-6 transition-all duration-200 hover:text-amber-400">
-            Les goats derriéres vos persos préférés !
+            Les <span className="text-red-500 font-extrabold">goats</span> derriéres vos <span className="text-red-500 font-extrabold">persos</span> préférés !
         </h2>
         <Swiper
             modules={[Navigation, Autoplay, EffectCoverflow, Pagination]}

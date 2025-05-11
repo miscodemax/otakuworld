@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Loader from "./loader";
+import { Link } from "react-router-dom";
 
 export default function AfficherAnime({ fetchingAnime }) {
   const [animes, setAnimes] = useState([]);
@@ -11,10 +12,23 @@ export default function AfficherAnime({ fetchingAnime }) {
   const fetchAnime = async () => {
     setLoader(true);
     const data = await fetchingAnime(25, currentPage);
-    setHasNextPage(data[1].has_next_page);
-    setNumberPage(data[1].last_visible_page);
-    setAnimes(data[0]);
+    console.log(data[0]);
+    
+     if (Array.isArray(data[0])) {
+          const unique = data[0].filter(
+            (anime, index, self) =>
+              anime.mal_id && index === self.findIndex(a => a.mal_id === anime.mal_id)
+          );
+          setAnimes(unique);
+            setHasNextPage(data[1].has_next_page);
+            setNumberPage(data[1].last_visible_page);
+
     setLoader(false);
+        } else {
+          console.warn("Les données ne sont pas un tableau :", data);
+          setAnimes([]);
+        }
+  
   };
 
   useEffect(() => {
@@ -37,6 +51,7 @@ export default function AfficherAnime({ fetchingAnime }) {
       <div className="w-full">
         {/* Pagination */}
         <div className="flex justify-center mb-8 gap-4">
+        
           <button
             onClick={prevPage}
             disabled={currentPage === 1}
@@ -66,7 +81,7 @@ export default function AfficherAnime({ fetchingAnime }) {
               <div className="relative h-64">
                 <img
                   src={anime.images.jpg.image_url || "https://via.placeholder.com/300x400?text=Image+indisponible"}
-                  alt={anime.title}
+                  alt={anime.title_english}
                   className="w-full h-full object-cover rounded-t-3xl"
                 />
                 {anime.rank && anime.rank < 500 && (
@@ -77,16 +92,19 @@ export default function AfficherAnime({ fetchingAnime }) {
               </div>
               <div className="flex flex-col flex-grow p-4">
                 <h3 className="text-lg font-bold text-amber-400 mb-2 line-clamp-2">
-                  {anime.title}
+                  {anime.title_english || anime.title}
                 </h3>
                 <p className="text-sm text-gray-300 line-clamp-3 mb-4">
                   {anime.synopsis?.slice(0, 200)}...
                 </p>
                 <div className="flex justify-between items-center mt-auto">
                   <span className="text-xs text-gray-400">⭐ {anime.score || 'N/A'}</span>
-                  <button className="bg-amber-500 hover:bg-amber-600 text-black text-sm font-bold py-2 px-3 rounded-full transition-all">
-                    Voir plus
-                  </button>
+                    <Link to={'/animesdetails/' + anime.mal_id}>
+                        <button className="bg-amber-500 hover:bg-amber-600 text-black text-sm font-bold py-2 px-3 rounded-full transition-all">
+                        Voir plus
+                    </button>
+                    </Link>
+                  
                 </div>
               </div>
             </div>

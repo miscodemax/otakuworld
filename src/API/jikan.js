@@ -71,6 +71,15 @@ export async function getGenre(limit = 10, page = 1, genre = 1, choice) {
     return [];
   }
 }
+export async function getSuggestionAnime() {
+  try {
+    const data = await fetchWithRetry(`${BASE_URL}/top/anime?limit=25`);
+    return [data.data, data.pagination];
+  } catch (error) {
+    console.error('Erreur lors du chargement des animes par genre :', error);
+    return [];
+  }
+}
 
 export async function getPopularCharacters(limit = 10) {
   try {

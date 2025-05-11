@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Loader from "./loader";
 import { getGenre } from "../API/jikan";
+import { Link } from "react-router-dom";
 
 export default function Genres({ genreId, Mode }) {
   const [animes, setAnimes] = useState([]);
@@ -89,9 +90,12 @@ export default function Genres({ genreId, Mode }) {
                 </p>
                 <div className="flex justify-between items-center mt-auto">
                   <span className="text-xs text-gray-400">⭐ {anime.score || 'N/A'}</span>
-                  <button className="bg-amber-500 hover:bg-amber-600 text-black text-sm font-bold py-2 px-3 rounded-full transition-all">
-                    Voir plus
-                  </button>
+                  <Link to={'/animesdetails/' + anime.mal_id}>
+                    <button className="bg-amber-500 hover:bg-amber-600 text-black text-sm font-bold py-2 px-3 rounded-full transition-all">
+                      Voir plus
+                    </button>
+                  </Link>
+                  
                 </div>
               </div>
             </div>

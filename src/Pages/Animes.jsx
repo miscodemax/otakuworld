@@ -4,6 +4,7 @@ import Shonen from "../components/shonen";
 import { useState } from "react";
 import Badge from "../components/Badge";
 import Genres from "../components/PageGenre";
+import CarouselSuggestion from "../components/CarouselSuggestion";
 
 export default function Animes() {
 const genresAnime = [
@@ -112,6 +113,8 @@ const themesAnime = [
 
       <Genres genreId={id} Mode="genres" />
       </div>
+
+      <CarouselSuggestion/>
 
     </section>
   );

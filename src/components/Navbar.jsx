@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import {Link} from "react-router-dom"
+import SearchAnime from "./searchAnime";
 
 export default function Navbar() {
   const [liens, setLiens] = useState([]);
@@ -24,12 +25,13 @@ export default function Navbar() {
         scrolled ? "bg-gray-950 shadow-lg opacity-90" : "bg-transparent"
       }`}
     >
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="container h-32 mx-auto px-6 py-4 flex items-center justify-between">
         <div className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">
           <Link href="/" className="hover:text-yellow-400 transition-colors duration-300">
             Otakuworld
           </Link>
         </div>
+        <SearchAnime/>
         <ul className="flex space-x-6">
           {liens.map((lien) => (
             <li key={lien}>
