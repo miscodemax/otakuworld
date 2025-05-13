@@ -17,9 +17,14 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/manga' element={<Manga />} />
+        <Route path='/manga' element={<Manga />} >
+          <Route path='shonen' element={<Shonen type='manga'/>} />
+          <Route path='seinen' element={<Seinen type='manga'/>} />
+          <Route path='shojo' element={<Shojo type='manga'/>} />
+        </Route>
         <Route path='/series' element={<Series />} />
-        <Route path='/animesdetails/:id' element={<Animesdetails />} />
+        <Route path='/animedetails/:id' element={<Animesdetails/>} />
+        <Route path='/mangadetails/:id' element={<Animesdetails type='manga'/>} />
         
         {/* 👇 Route imbriquée pour Animes */}
         <Route path='/animes' element={<Animes />}>

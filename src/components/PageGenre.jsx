@@ -3,7 +3,7 @@ import Loader from "./loader";
 import { getGenre } from "../API/jikan";
 import { Link } from "react-router-dom";
 
-export default function Genres({ genreId, Mode }) {
+export default function Genres({ genreId, Mode, type='anime' }) {
   const [animes, setAnimes] = useState([]);
   const [loader, setLoader] = useState(true);
   const [numberPage, setNumberPage] = useState(1);
@@ -12,7 +12,7 @@ export default function Genres({ genreId, Mode }) {
 
   const fetchAnime = async () => {
     setLoader(true);
-    const data = await getGenre(25, currentPage, genreId, Mode);
+    const data = await getGenre(25, currentPage, genreId, Mode, type);
     setHasNextPage(data[1].has_next_page);
     setNumberPage(data[1].last_visible_page);
     setAnimes(data[0]);
@@ -90,7 +90,7 @@ export default function Genres({ genreId, Mode }) {
                 </p>
                 <div className="flex justify-between items-center mt-auto">
                   <span className="text-xs text-gray-400">⭐ {anime.score || 'N/A'}</span>
-                  <Link to={'/animesdetails/' + anime.mal_id}>
+                  <Link to={'/animedetails/' + anime.mal_id}>
                     <button className="bg-amber-500 hover:bg-amber-600 text-black text-sm font-bold py-2 px-3 rounded-full transition-all">
                       Voir plus
                     </button>

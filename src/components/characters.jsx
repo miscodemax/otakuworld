@@ -12,7 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination"; // Assure-toi que le CSS de Swiper est bien importé
 import "../swiper-styles.css"; // Ton fichier CSS personnalisé
-import { div } from "framer-motion/client";
+
 
 export default function TopCharacters() {
     const [characters, setCharacters] = useState([]);

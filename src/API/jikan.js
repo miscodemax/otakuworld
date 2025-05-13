@@ -31,9 +31,9 @@ async function fetchWithRetry(url, retries = 3, delayMs = 1000) {
   }
 }
 
-export async function getPopularAnimes(limit = 10, page = 2) {
+export async function getPopularAnimes(limit = 10, page = 2, type='anime') {
   try {
-    const data = await fetchWithRetry(`${BASE_URL}/top/anime?limit=${limit}&page=${page}`);
+    const data = await fetchWithRetry(`${BASE_URL}/top/${type}?limit=${limit}&page=${page}`);
     console.log("Données retournées par l'API :", data);
     return [data.data, data.pagination];
   } catch (error) {
@@ -41,6 +41,15 @@ export async function getPopularAnimes(limit = 10, page = 2) {
     return [];
   }
 }
+
+// Exemple : /top/people
+export async function getPopularMangakas(limit = 25, page = 1) {
+  const res = await fetch(`https://api.jikan.moe/v4/top/people?page=${page}&limit=${limit}`);
+  const data = await res.json();
+  return data.data;
+}
+
+
 
 export async function getUpcomingAnimes(limit = 10) {
   try {
@@ -62,9 +71,9 @@ export async function getCurrentSeasonAnimes(limit = 10, page = 2) {
   }
 }
 
-export async function getGenre(limit = 10, page = 1, genre = 1, choice) {
+export async function getGenre(limit = 10, page = 1, genre = 1, choice, type='anime') {
   try {
-    const data = await fetchWithRetry(`${BASE_URL}/anime?limit=${limit}&page=${page}&${choice}=${genre}&&order_by=popularity&sort=asc`);
+    const data = await fetchWithRetry(`${BASE_URL}/${type}?limit=${limit}&page=${page}&${choice}=${genre}&&order_by=popularity&sort=asc`);
     return [data.data, data.pagination];
   } catch (error) {
     console.error('Erreur lors du chargement des animes par genre :', error);
@@ -159,10 +168,10 @@ export async function getNewsFromStudioAnimes(studioId, animeLimit = 5, newsLimi
   }
 }
 
-export async function getShonen(limit = 10, page = 2) {
+export async function getShonen(limit = 10, page = 2, type='anime') {
   try {
     const data = await fetchWithRetry(
-      `${BASE_URL}/anime?order_by=start_date&sort=desc&genres=27&genre_type=demographics&limit=${limit}&page=${page}`
+      `${BASE_URL}/${type}?order_by=popularity&sort=asc&genres=27&genre_type=demographics&limit=${limit}&page=${page}`
     );
     return [data.data, data.pagination];
   } catch (error) {
@@ -171,10 +180,10 @@ export async function getShonen(limit = 10, page = 2) {
   }
 }
 
-export async function getShojo(limit = 10, page = 2) {
+export async function getShojo(limit = 10, page = 2, type='anime') {
   try {
     const data = await fetchWithRetry(
-      `${BASE_URL}/anime?order_by=start_date&sort=desc&genres=25&genre_type=demographics&limit=${limit}&page=${page}`
+      `${BASE_URL}/${type}?order_by=popularity&sort=asc&genres=25&genre_type=demographics&limit=${limit}&page=${page}`
     );
     return [data.data, data.pagination];
   } catch (error) {
@@ -183,10 +192,10 @@ export async function getShojo(limit = 10, page = 2) {
   }
 }
 
-export async function getSeinen(limit = 10, page = 2) {
+export async function getSeinen(limit = 10, page = 2, type='anime') {
   try {
     const data = await fetchWithRetry(
-      `${BASE_URL}/anime?order_by=start_date&sort=desc&genres=42&genre_type=demographics&limit=${limit}&page=${page}`
+      `${BASE_URL}/${type}?genres=42&genre_type=demographics&limit=${limit}&page=${page}&order_by=popularity&sort=asc`
     );
     return [data.data, data.pagination];
   } catch (error) {

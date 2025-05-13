@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Loader from "./loader";
 import { Link } from "react-router-dom";
 
-export default function AfficherAnime({ fetchingAnime }) {
+export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
   const [animes, setAnimes] = useState([]);
   const [loader, setLoader] = useState(true);
   const [numberPage, setNumberPage] = useState(1);
@@ -11,47 +11,55 @@ export default function AfficherAnime({ fetchingAnime }) {
 
   const fetchAnime = async () => {
     setLoader(true);
-    const data = await fetchingAnime(25, currentPage);
-    console.log(data[0]);
-    
-     if (Array.isArray(data[0])) {
-          const unique = data[0].filter(
-            (anime, index, self) =>
-              anime.mal_id && index === self.findIndex(a => a.mal_id === anime.mal_id)
-          );
-          setAnimes(unique);
-            setHasNextPage(data[1].has_next_page);
-            setNumberPage(data[1].last_visible_page);
+    try {
+      const data = await fetchingAnime(25, currentPage, type);
+      console.log(data[0]);
 
-    setLoader(false);
-        } else {
-          console.warn("Les données ne sont pas un tableau :", data);
-          setAnimes([]);
-        }
-  
+      if (Array.isArray(data[0])) {
+        const unique = data[0].filter(
+          (anime, index, self) =>
+            anime.mal_id && index === self.findIndex(a => a.mal_id === anime.mal_id)
+        );
+        setAnimes(unique);
+        setHasNextPage(data[1]?.has_next_page ?? false);
+        setNumberPage(data[1]?.last_visible_page ?? 1);
+      } else {
+        console.warn("Les données ne sont pas un tableau :", data);
+        setAnimes([]);
+        setHasNextPage(false);
+        setNumberPage(1);
+      }
+    } catch (error) {
+      console.error("Erreur de fetch :", error);
+      setAnimes([]);
+      setHasNextPage(false);
+      setNumberPage(1);
+    } finally {
+      setLoader(false);
+    }
   };
 
   useEffect(() => {
     fetchAnime();
-  }, [currentPage, fetchingAnime]);
+  }, [currentPage, type, fetchingAnime]);
 
   const nextPage = () => {
-    if (hasNextPage) setCurrentPage((prev) => prev + 1);
+    if (hasNextPage) setCurrentPage(prev => prev + 1);
   };
 
   const prevPage = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+    if (currentPage > 1) setCurrentPage(prev => prev - 1);
   };
 
   if (loader) return <Loader />;
-  if (!Array.isArray(animes)) return <div className="text-red-500 text-center mt-10">Erreur : données invalides</div>;
+  if (!Array.isArray(animes) || animes.length === 0)
+    return <div className="text-red-500 text-center mt-10">Aucun résultat trouvé.</div>;
 
   return (
     <div className="container w-full flex justify-center">
       <div className="w-full">
-        {/* Pagination */}
+        {/* Pagination top */}
         <div className="flex justify-center mb-8 gap-4">
-        
           <button
             onClick={prevPage}
             disabled={currentPage === 1}
@@ -64,14 +72,14 @@ export default function AfficherAnime({ fetchingAnime }) {
           </span>
           <button
             onClick={nextPage}
-            disabled={currentPage === numberPage}
+            disabled={!hasNextPage}
             className="px-4 py-2 bg-gray-700 text-white transition-all duration-200 rounded hover:bg-black hover:text-amber-400 disabled:opacity-50"
           >
             Suivant
           </button>
         </div>
 
-        {/* Anime Cards */}
+        {/* Anime cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center">
           {animes.map((anime) => (
             <div
@@ -80,8 +88,8 @@ export default function AfficherAnime({ fetchingAnime }) {
             >
               <div className="relative h-64">
                 <img
-                  src={anime.images.jpg.image_url || "https://via.placeholder.com/300x400?text=Image+indisponible"}
-                  alt={anime.title_english}
+                  src={anime.images?.jpg?.image_url || "https://via.placeholder.com/300x400?text=Image+indisponible"}
+                  alt={anime.title_english || anime.title}
                   className="w-full h-full object-cover rounded-t-3xl"
                 />
                 {anime.rank && anime.rank < 500 && (
@@ -95,23 +103,22 @@ export default function AfficherAnime({ fetchingAnime }) {
                   {anime.title_english || anime.title}
                 </h3>
                 <p className="text-sm text-gray-300 line-clamp-3 mb-4">
-                  {anime.synopsis?.slice(0, 200)}...
+                  {anime.synopsis?.slice(0, 200) || "Synopsis indisponible"}...
                 </p>
                 <div className="flex justify-between items-center mt-auto">
-                  <span className="text-xs text-gray-400">⭐ {anime.score || 'N/A'}</span>
-                    <Link to={'/animesdetails/' + anime.mal_id}>
-                        <button className="bg-amber-500 hover:bg-amber-600 text-black text-sm font-bold py-2 px-3 rounded-full transition-all">
-                        Voir plus
+                  <span className="text-xs text-gray-400">⭐ {anime.score ?? 'N/A'}</span>
+                  <Link to={`/${type}details/${anime.mal_id}`}>
+                    <button className="bg-amber-500 hover:bg-amber-600 text-black text-sm font-bold py-2 px-3 rounded-full transition-all">
+                      Voir plus
                     </button>
-                    </Link>
-                  
+                  </Link>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Pagination */}
+        {/* Pagination bottom */}
         <div className="flex justify-center mt-8 gap-4">
           <button
             onClick={prevPage}
@@ -125,7 +132,7 @@ export default function AfficherAnime({ fetchingAnime }) {
           </span>
           <button
             onClick={nextPage}
-            disabled={currentPage === numberPage}
+            disabled={!hasNextPage}
             className="px-4 py-2 bg-gray-700 text-white transition-all duration-200 rounded hover:bg-black hover:text-amber-400 disabled:opacity-50"
           >
             Suivant

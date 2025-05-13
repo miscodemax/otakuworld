@@ -88,19 +88,29 @@ const themesAnime = [
     </div>
 
       <div className="w-full grid justify-items-center py-10 gap-10">
-      <div className="h-64 flex flex-col gap-14 w-full bg-gray-950 justify-center items-center border-b">
-        <h2 className="text-5xl text-center text-gray-500 font-extrabold hover:text-amber-500 transition-all duration-200">
-          Choisissez parmi vos genres et thémes préférés !
-        </h2>
-        <div className="flex gap-10">
-          <button onClick={() => setMode(true)} className="text-3xl font-bold text-shadow-white cursor-pointer transition-all duration-200 hover:text-gray-700 hover:underline">
-            GENRES
-          </button>
-          <button onClick={() => setMode(false)} className="text-3xl font-bold text-shadow-white cursor-pointer transition-all duration-200 hover:text-gray-700 hover:underline">
-            THEMES
-          </button>
-        </div>
-      </div>
+      <div className="w-full bg-gray-950 border-b py-10 flex flex-col items-center justify-center gap-8 sm:gap-10 md:gap-14 px-4">
+  <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center text-gray-500 font-extrabold hover:text-amber-500 transition-all duration-200">
+    Choisissez parmi vos genres et thèmes préférés !
+  </h2>
+
+  <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 md:gap-10 items-center justify-center">
+    <button
+      onClick={() => setMode(true)}
+      className={`text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer transition-all duration-200 
+      ${mode ? 'text-amber-500 underline underline-offset-4' : 'text-white hover:text-gray-700'}`}
+    >
+      GENRES
+    </button>
+
+    <button
+      onClick={() => setMode(false)}
+      className={`text-xl sm:text-2xl md:text-3xl font-bold cursor-pointer transition-all duration-200 
+      ${!mode ? 'text-amber-500 underline underline-offset-4' : 'text-white hover:text-gray-700'}`}
+    >
+      THÈMES
+    </button>
+  </div>
+</div>
 
       <div className={`grid ${mode ? 'grid-cols-4' : 'grid-cols-5'} gap-5 pt-5 justify-items-center`}>
         {dataArray.map(({ name, id, color }) => (
