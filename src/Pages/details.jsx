@@ -59,7 +59,7 @@ export default function Animesdetails({ type = 'anime' }) {
         <img
           src={item.images?.jpg?.large_image_url}
           alt={item.title}
-          className="w-full md:w-1/3 rounded-2xl shadow py-8 pl-8"
+          className="w-full md:w-1/3 rounded-2xl shadow py-8 md:pl-8"
         />
 
         <div className="p-8">
