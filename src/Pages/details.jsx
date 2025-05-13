@@ -55,7 +55,7 @@ export default function Animesdetails({ type = 'anime' }) {
         ← Retour
       </button>
 
-      <div className="flex w-full flex-col md:flex-row gap-6">
+      <div className="flex w-full flex-col justify-items-center md:flex-row gap-6">
         <img
           src={item.images?.jpg?.large_image_url}
           alt={item.title}

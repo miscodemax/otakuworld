@@ -20,10 +20,10 @@ export default function NewTop() {
     return (
         <div className="container flex flex-col items-center gap-10 py-20">
             <div className="w-full flex gap-10 items-center justify-center">
-                <button type="button" onClick={newAnime} className="text-3xl font-bold transition-colors hover:text-amber-300 duration-200 border-b py-4">
+                <button type="button" onClick={newAnime} className="text-lg md:text-3xl font-bold transition-colors hover:text-amber-300 duration-200 border-b py-4">
                     Nouveautés
                 </button>
-                <button type="button" onClick={topAnime} className="text-3xl font-bold transition-colors hover:text-amber-300 duration-200 border-b py-4">
+                <button type="button" onClick={topAnime} className="text-lg md:text-3xl font-bold transition-colors hover:text-amber-300 duration-200 border-b py-4">
                     Top/Classement
                 </button>
             </div>
