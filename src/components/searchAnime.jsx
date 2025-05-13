@@ -74,7 +74,7 @@ export default function SearchAnime() {
           {results.map((anime) => (
             <li key={anime.mal_id} role="listitem">
               <Link
-                to={`/animesdetails/${anime.mal_id}`}
+                to={`/animedetails/${anime.mal_id}`}
                 onClick={clearSearch}
                 className="block px-4 py-2 hover:bg-gray-700"
               >
