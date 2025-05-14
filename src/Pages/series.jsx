@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import QuizzButton from "../components/ButtonChoice";
 
 export default function Series() {
-  const levels = ["Shonen (anime pour jeunes garçons)", "Seinen (anime pour jeunes adultes)", "Shojo (anime pour jeunes filles)"];
+  const levels = ["Shonen", "Seinen", "Shojo"];
 
   const animeGenres = [
     { id: 1, name: "Action" }, { id: 2, name: "Adventure" }, { id: 3, name: "Comedy" },
@@ -34,7 +34,7 @@ export default function Series() {
       setSelectedGenres((prev) => prev.filter((g) => g !== genreName));
       setGenreId((prev) => prev.filter((id) => id !== genreIdValue));
     } else if (selectedGenres.length < 3) {
-      setSelectedGenres((prev) => [...prev, genreName]);
+      setSelectedGenres((prev) => [...prev, selectedLevel, genreName]);
       setGenreId((prev) => [...prev, genreIdValue]);
     }
   };
@@ -72,7 +72,7 @@ export default function Series() {
 
       <div className="grid lg:grid-cols-2 gap-10 max-w-7xl mx-auto">
         {/* Partie Questionnaire */}
-        <div className="p-6 bg-gradient-to-r from-blue-500 via-cyan-500 to-green-400 rounded-xl shadow-xl">
+        <div className="p-6 rounded-xl shadow-xl">
           <h2 className="text-2xl font-bold text-center text-white mb-6">
             Réponds à ces quelques questions
           </h2>
@@ -106,7 +106,7 @@ export default function Series() {
                       !selectedGenres.includes(genre.name) &&
                       selectedGenres.length >= 3
                     }
-                    className="bg-teal-500 hover:bg-teal-600 text-white"
+                    className="bg-gray-700 hover:bg-gray-900 text-white"
                   >
                     {genre.name}
                   </QuizzButton>
@@ -128,13 +128,13 @@ export default function Series() {
 
           {!loading && recommendations.length > 0 && (
             <>
-              <h2 className="text-2xl font-bold text-white mb-4 text-center">Animes recommandés 💡</h2>
+              <h2 className="text-3xl font-bold text-white mb-4 text-center">Animes recommandés 💡</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {recommendations.map((anime) => (
                   <Link
                     key={anime.mal_id}
-                    to={`/anime/${anime.mal_id}`}
-                    className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:scale-105 transition duration-300"
+                    to={`/animedetails/${anime.mal_id}`}
+                    className="group bg-gray-950 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transform hover:scale-105 transition duration-300"
                   >
                     <img
                       src={anime.images?.jpg?.image_url}
