@@ -22,7 +22,7 @@ function App() {
           <Route path='seinen' element={<Seinen type='manga'/>} />
           <Route path='shojo' element={<Shojo type='manga'/>} />
         </Route>
-        <Route path='/series' element={<Series />} />
+        <Route path='/recommendations' element={<Series />} />
         <Route path='/animedetails/:id' element={<Animesdetails/>} />
         <Route path='/mangadetails/:id' element={<Animesdetails type='manga'/>} />
         

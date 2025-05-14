@@ -7,13 +7,15 @@ export default function Navbar() {
   const [liens, setLiens] = useState([]);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeLink, setActiveLink] = useState(false);
+
 
   useEffect(() => {
     setLiens([
       ["Accueil", "/"],
       ["Animes", "/animes"],
       ["Mangas", "/manga"],
-      ["Series", "/series"],
+      ["recommendations", "/recommendations"],
     ]);
   }, []);
 
@@ -45,13 +47,20 @@ export default function Navbar() {
           <ul className="flex space-x-6">
             {liens.map(([nom, chemin]) => (
               <li key={nom}>
-                <NavLink
-                  to={chemin}
-                  onClick={closeMenu}
-                  className="text-white hover:text-yellow-400 transition-colors duration-300 font-medium"
-                >
-                  {nom}
-                </NavLink>
+                <Link
+                to={chemin}
+                onClick={() => {
+                  closeMenu();
+                  setActiveLink(nom);
+                }}
+                className={
+                  "transition-colors duration-300 font-medium " +
+                  (activeLink === nom ? "text-amber-400 underline" : "text-white no-underline")
+                }
+              >
+                {nom}
+              </Link>
+
               </li>
             ))}
           </ul>
