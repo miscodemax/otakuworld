@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import QuizzButton from "../components/ButtonChoice";
-
+import QuizzButton from "../components/ButtonChoice"
 export default function Series() {
   const levels = ["Shonen", "Seinen", "Shojo"];
 

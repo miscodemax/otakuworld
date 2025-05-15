@@ -48,18 +48,18 @@ export default function Navbar() {
             {liens.map(([nom, chemin]) => (
               <li key={nom}>
                 <Link
-                to={chemin}
-                onClick={() => {
-                  closeMenu();
-                  setActiveLink(nom);
-                }}
-                className={
-                  "transition-colors duration-300 font-medium " +
-                  (activeLink === nom ? "text-amber-400 underline" : "text-white no-underline")
-                }
-              >
-                {nom}
-              </Link>
+                  to={chemin}
+                  onClick={() => {
+                    closeMenu();
+                    setActiveLink(nom);
+                  }}
+                  className={
+                    "transition-colors duration-300 font-medium " +
+                    (activeLink === nom ? "text-amber-400 underline" : "text-white no-underline")
+                  }
+                >
+                  {nom}
+                </Link>
 
               </li>
             ))}

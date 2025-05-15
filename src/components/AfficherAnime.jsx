@@ -8,6 +8,7 @@ export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
   const [numberPage, setNumberPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [sort, setSort] = useState(12);
 
   const fetchAnime = async () => {
     setLoader(true);
@@ -77,11 +78,14 @@ export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
           >
             Suivant
           </button>
+          <input type="range" min={0} max={25}
+            onChange={(e) => setSort(e.target.value)}
+          />
         </div>
 
         {/* Anime cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center">
-          {animes.map((anime) => (
+          {animes.slice(0, sort).map((anime) => (
             <div
               key={anime.mal_id}
               className="w-72 h-[520px] bg-gray-900 rounded-3xl shadow-xl transition-transform hover:scale-105 overflow-hidden flex flex-col"
