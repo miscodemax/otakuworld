@@ -61,9 +61,20 @@ export default function Genres({ genreId, Mode, type = 'anime' }) {
           >
             Suivant
           </button>
-          <input type="range" min={0} max={25}
-            onChange={(e) => setSort(e.target.value)}
-          />
+          <div className="flex flex-col items-center w-full max-w-xs">
+            <label className="text-gray-400 mb-2 text-sm font-medium">
+              Trier par nombre d'éléments (0–25) :
+            </label>
+            <input
+              type="range"
+              min={0}
+              max={25}
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="w-full h-2.5 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-500"
+            />
+            <span className="mt-1 text-sm text-amber-400">Valeur : {sort}</span>
+          </div>
         </div>
 
         {/* Anime Cards */}

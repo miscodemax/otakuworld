@@ -86,7 +86,7 @@ export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
 
           {/* Input Range amélioré */}
           <div className="flex flex-col items-center w-full max-w-xs">
-            <label className="text-white mb-2 text-sm font-medium">
+            <label className="text-gray-400 mb-2 text-sm font-medium">
               Trier par nombre d'éléments (0–25) :
             </label>
             <input
@@ -95,7 +95,7 @@ export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
               max={25}
               value={sort}
               onChange={(e) => setSort(e.target.value)}
-              className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-500"
+              className="w-full h-2.5 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-500"
             />
             <span className="mt-1 text-sm text-amber-400">Valeur : {sort}</span>
           </div>
