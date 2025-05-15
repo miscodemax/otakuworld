@@ -43,24 +43,31 @@ export default function Genres({ genreId, Mode, type = 'anime' }) {
     <div className="container w-full flex justify-center">
       <div className="w-full">
         {/* Pagination Top */}
-        <div className="flex justify-center mb-8 gap-4">
-          <button
-            onClick={prevPage}
-            disabled={currentPage === 1}
-            className="px-4 py-2 bg-gray-700 text-white transition-all duration-200 rounded hover:bg-black hover:text-red-600 disabled:opacity-50"
-          >
-            Précédent
-          </button>
-          <span className="text-white text-lg font-bold hover:text-amber-400">
-            Page {currentPage} / {numberPage}
-          </span>
-          <button
-            onClick={nextPage}
-            disabled={currentPage === numberPage}
-            className="px-4 py-2 bg-gray-700 text-white transition-all duration-200 rounded hover:bg-black hover:text-amber-400 disabled:opacity-50"
-          >
-            Suivant
-          </button>
+        <div className="flex flex-col md:flex-row justify-center mb-8 gap-6 items-center">
+          {/* Pagination */}
+          <div className="flex gap-4 items-center">
+            <button
+              onClick={prevPage}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-700 text-white transition-all duration-200 rounded hover:bg-black hover:text-red-600 disabled:opacity-50"
+            >
+              Précédent
+            </button>
+
+            <span className="text-white text-lg font-bold hover:text-amber-400">
+              Page {currentPage} / {numberPage}
+            </span>
+
+            <button
+              onClick={nextPage}
+              disabled={!hasNextPage}
+              className="px-4 py-2 bg-gray-700 text-white transition-all duration-200 rounded hover:bg-black hover:text-amber-400 disabled:opacity-50"
+            >
+              Suivant
+            </button>
+          </div>
+
+          {/* Input Range amélioré */}
           <div className="flex flex-col items-center w-full max-w-xs">
             <label className="text-gray-400 mb-2 text-sm font-medium">
               Trier par nombre d'éléments (0–25) :
