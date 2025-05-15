@@ -60,7 +60,8 @@ export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
     <div className="container w-full flex justify-center">
       <div className="w-full">
         {/* Pagination top */}
-        <div className="flex flex-col md:flex-row justify-center mb-8 gap-4">
+        <div className="flex flex-col md:flex-row justify-center mb-8 gap-6 items-center">
+          {/* Pagination */}
           <div className="flex gap-4 items-center">
             <button
               onClick={prevPage}
@@ -69,9 +70,11 @@ export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
             >
               Précédent
             </button>
+
             <span className="text-white text-lg font-bold hover:text-amber-400">
               Page {currentPage} / {numberPage}
             </span>
+
             <button
               onClick={nextPage}
               disabled={!hasNextPage}
@@ -81,10 +84,23 @@ export default function AfficherAnime({ fetchingAnime, type = 'anime' }) {
             </button>
           </div>
 
-          <input type="range" min={0} max={25}
-            onChange={(e) => setSort(e.target.value)}
-          />
+          {/* Input Range amélioré */}
+          <div className="flex flex-col items-center w-full max-w-xs">
+            <label className="text-white mb-2 text-sm font-medium">
+              Trier par nombre d'éléments (0–25) :
+            </label>
+            <input
+              type="range"
+              min={0}
+              max={25}
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-amber-500"
+            />
+            <span className="mt-1 text-sm text-amber-400">Valeur : {sort}</span>
+          </div>
         </div>
+
 
         {/* Anime cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center">
